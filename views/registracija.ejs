@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+        body {
+            background-image: url('/images/bg6.png');
+            background-color: bisque;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 100px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5vh;
+        }
+        form {
+            border: 1px solid black;
+            padding: 3vh;
+            border-radius: 40px;
+            width: 330px;
+            backdrop-filter: blur(10px);
+        }
+        input {
+            height: 25px;
+            border: 1px solid black;
+            border-radius: 5px;
+            margin: 5px;
+            margin-left: 0;
+            width: 290px;
+        }
+        .sub {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<h1><%= title %></h1>
+<form method="post" action="/registracijaa">
+    <label>E-mail:</label>
+    <br>
+    <input type="text" name="email">
+    <br>
+    <label>Password:</label>
+    <br>
+    <input type="password" name="lozinka">
+    <br>
+    <label>Ime:</label>
+    <br>
+    <input type="text" name="ime">
+    <br>
+    <label>Prezime:</label>
+    <br>
+    <input type="text" name="prezime">
+    <br>
+    <label>Status:</label>
+    <br>
+    <select id="status" name="status">
+        <option value="Administrator">Administrator</option>
+        <option value="Menadzer">Menadzer</option>
+        <option value="Radnik">Radnik</option>
+    </select>
+    <br><br>
+    <label>Naredjeni:</label>
+    <br>
+    <select id="nadredjeni" name="nadredjeni">
+        <% for(let i=0;i<zaposleni.length;i++){ %>
+            <% let rezultat = zaposleni[i].ime + " " + zaposleni[i].prezime; %>
+            <option value="<%= rezultat %>"><%= rezultat %></option>
+        <%}%>
+    </select>
+    <br><br>
+    <label>Početak radnog vremena:</label>
+    <br>
+    <input type="time" name="prv">
+    <br>
+    <label>Kraj radnog vremena:</label>
+    <br>
+    <input type="time" name="krv">
+    <br><br>
+    <input type="submit" class="sub">
+</form>
+</body>
+</html>

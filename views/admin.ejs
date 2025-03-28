@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style>
+      body{
+        padding: 0;
+        margin: 0;
+      }
+      .bu {
+        background: transparent;
+        border: none;
+        color:white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 17px;
+      }
+      .reg {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
+        justify-content: center;
+        align-items: center;
+      }
+      .forma {
+        border: 3px solid #4b8d6f;
+        padding: 3vh;
+        border-radius: 40px;
+        width: 350px;
+        backdrop-filter: blur(10px);
+      }
+      input {
+        height: 25px;
+        border: 1px solid black;
+        border-radius: 5px;
+        margin: 5px;
+        margin-left: 0;
+        width: 200px;
+      }
+      .sub {
+        width: 100px;
+        height: auto;
+        background-color:#D1E7DD;
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 5px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row text-center" style="
+                          position: fixed;
+                          width: 100%;
+                          background-color: #4b8d6f;
+                          z-index: 100;
+                          padding-top: 20px; padding-bottom: 20px; font-weight: bold; font-size: 17px;">
+        <div class="col">
+          <span>Admin</span>
+        </div>
+        <div class="col">
+         <form action="/registracija" method="get">
+           <a href="#dodavanjeKorisnika" class="bu">Registruj korisnika</a>
+         </form>
+        </div>
+        <div class="col">
+          <a href="#brisanjeKorisnika" class="bu">Izbriši korisnika</a>
+        </div>
+        <div class="col">
+          <a href="#dodavanjeProjekta" class="bu">Dodaj projekat</a>
+        </div>
+        <div class="col">
+          <a href="#dodijeliProjekat" class="bu">Dodijeli projekat</a>
+        </div>
+        <div class="col">
+          <a href="#aktivnosti" class="bu">Aktivnosti</a>
+        </div>
+        <div class="col">
+          <a href="/uredi" class="bu">Uredi radnika</a>
+        </div>
+        <div class="col">
+          <form action="/login" method="get">
+            <button id="myButton" type="submit" class="bu">Odjava</button>
+          </form>
+        </div>
+      </div>
+      <br>
+      <div class="reg">
+        <form id="dodavanjeKorisnika" class="forma" method="post" action="/registracija" style="margin-top: 60px;">
+          <label>E-mail:</label>
+          <br>
+          <input type="text" name="email">
+          <br>
+          <label>Password:</label>
+          <br>
+          <input type="password" name="lozinka">
+          <br>
+          <label>Ime:</label>
+          <br>
+          <input type="text" name="ime">
+          <br>
+          <label>Prezime:</label>
+          <br>
+          <input type="text" name="prezime">
+          <br>
+          <label>Status:</label>
+          <br>
+          <select id="status" name="status">
+            <option value="Administrator">Administrator</option>
+            <option value="Menadzer">Menadzer</option>
+            <option value="Radnik">Radnik</option>
+          </select>
+          <br><br>
+          <label>Nadredjeni:</label>
+          <br>
+          <select id="nadredjeni" name="nadredjeni">
+            <% for(let i=0;i<zaposleni.length;i++){ %>
+              <% let rezultat = zaposleni[i].ime + " " + zaposleni[i].prezime; %>
+              <option value="<%= rezultat %>"><%= rezultat %></option>
+            <%}%>
+          </select>
+          <br><br>
+          <label>Početak radnog vremena:</label>
+          <br>
+          <input type="time" name="prv">
+          <br>
+          <label>Kraj radnog vremena:</label>
+          <br>
+          <input type="time" name="krv">
+          <br><br>
+          <input type="submit" class="sub">
+        </form>
+      </div>
+      <br>
+
+      <div id="brisanjeKorisnika" class="table-responsive text-center">
+      <table class="table">
+        <thead class="table-success">
+        <tr>
+          <th>ID:</th>
+          <th>Ime:</th>
+          <th>Prezime:</th>
+          <th>Status:</th>
+          <th>Nadređeni:</th>
+          <th>Početak radnog vremena:</th>
+          <th>Kraj radnog vremena:</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <%for(let i=0;i<zaposlenici.length;i++) {%>
+        <tr>
+          <td><%=zaposlenici[i].idz%></td>
+          <td><%=zaposlenici[i].ime%></td>
+          <td><%=zaposlenici[i].prezime%></td>
+          <td><%=zaposlenici[i].status%></td>
+          <td><%=zaposlenici[i].nadredjeni%></td>
+          <td><%=zaposlenici[i].pocetak_rv%></td>
+          <td><%=zaposlenici[i].kraj_rv%></td>
+          <td><button onclick="izbrisi(<%=zaposlenici[i].idz%>)" style="background-color:#D1E7DD; border: 1px solid black; border-radius: 10px; padding: 5px 20px;">Izbriši</button></td>
+        </tr>
+        <%}%>
+        </tbody>
+      </table>
+    </div>
+      <div class="row" style="margin-left: 40px;">
+        <div class="col">
+          <span id="dodavanjeProjekta"><strong>Dodaj projekat:</strong></span>
+          <form class="forma" method="post" action="/projekat" style="margin-top: 20px;">
+            <label>Naziv projekta:</label>
+            <br>
+            <input type="text" name="naziv">
+            <br>
+            <label>Opis:</label>
+            <br>
+            <input type="text" name="opis">
+            <br>
+            <label>Startni datum:</label>
+            <br>
+            <input type="datetime-local" name="sdatum">
+            <br>
+            <label>Zavrsni datum:</label>
+            <br>
+            <input type="datetime-local" name="zdatum">
+            <br>
+            <label>Menadzer na projektu:</label>
+            <br>
+            <select name="radnik" >
+              <% for(let i=0; i<zaposlenici.length; i++){ %>
+                <% if(zaposlenici[i].status === 'Menadzer' || zaposlenici[i].status === 'Administrator'){ %>
+                  <% let rezultat = zaposlenici[i].email; %>
+                  <optgroup label="<%= zaposlenici[i].ime + " " + zaposlenici[i].prezime %>">
+                    <option value="<%= rezultat %>"><%= rezultat %></option>
+                  </optgroup>
+                <%}%>
+              <% } %>
+            </select>
+            <br><br>
+            <input type="submit" class="sub">
+          </form>
+        </div>
+        <div class="col">
+          <span id="dodijeliProjekat"><strong>Dodijeli projekat:</strong></span>
+          <form class="forma" method="post" action="/dodijeli-projekat" style="margin-top: 20px;">
+            <label>Naziv projekta:</label>
+            <br>
+            <select name="naziv">
+              <% for(let i=0;i<projekti.length;i++){ %>
+                <% let rezultat = projekti[i].naziv; %>
+                <option value="<%= rezultat %>"><%= rezultat %></option>
+              <%}%>
+            </select>
+            <br><br>
+            <label>Radnik:</label>
+            <br>
+            <select name="radnik" >
+              <% for(let i=0; i<zaposlenici.length; i++){ %>
+                <% let rezultat = zaposlenici[i].email; %>
+                <optgroup label="<%= zaposlenici[i].ime + " " + zaposlenici[i].prezime %>">
+                  <option value="<%= rezultat %>"><%= rezultat %></option>
+                </optgroup>
+              <% } %>
+            </select>
+            <br><br>
+            <input type="submit" class="sub">
+          </form>
+        </div>
+        <div class="col">
+          <span id="sati"><strong>Utrošeni sati:</strong></span>
+          <form class="forma" method="post" action="/dodaj-sate" style="margin-top: 20px;">
+            <label>Naziv projekta:</label>
+            <br>
+            <select name="naziv">
+              <% for(let i=0;i<projekti.length;i++){ %>
+                <% let rezultat = projekti[i].naziv; %>
+                <option value="<%= rezultat %>"><%= rezultat %></option>
+              <%}%>
+            </select>
+            <br><br>
+            <label>Sati:</label>
+            <br>
+            <input type="number" name="sati">
+            <br><br>
+            <input type="submit" class="sub">
+          </form>
+        </div>
+      </div>
+      <br>
+      <!-- Aktivnosti -->
+      <span style="margin-left:10px;"><strong>Aktivnosti u projektima: </strong></span><br><br>
+      <div id="aktivnosti" class="table-responsive text-center">
+        <table class="table">
+          <thead class="table-success">
+          <tr>
+            <th>Projekat:</th>
+            <th>Opis:</th>
+            <th>Startni datum:</th>
+            <th>Završni datum:</th>
+            <th>Kraj projekta:</th>
+            <th>Utrošeni sati:</th>
+            <th>Nadređeni:</th>
+            <th>Radnici:</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% for(let i=0; i<projekti.length; i++) { %>
+            <tr>
+              <td><%= projekti[i].naziv %></td>
+              <td><%= projekti[i].opis %></td>
+
+              <%let pom = String(projekti[i].startni_datum); %>
+              <%let pom2 = ""; %>
+
+              <% for(let i=0; i<pom.length; i++){ %>
+                <% if(pom[i] === 'G') { %>
+                  <% break;%>
+                <%}%>
+                <%pom2 += pom[i];%>
+              <% } %>
+              <td><%= pom2 %></td>
+
+              <%let pom11 = String(projekti[i].zavrsni_datum); %>
+              <%let pom22 = ""; %>
+
+              <% for(let i=0; i<pom11.length; i++){ %>
+                <% if(pom11[i] === 'G') { %>
+                  <% break;%>
+                <%}%>
+                <%pom22 += pom11[i];%>
+              <% } %>
+              <td><%= pom22 %></td>
+
+              <%let pom111 = String(projekti[i].kraj); %>
+              <%let pom222 = ""; %>
+              <%let ima = false; %>
+              <% if(pom111 === "null") ima=true; %>
+
+              <% for(let i=0; i<pom111.length; i++){ %>
+                <% if(pom111[i] === 'G') { %>
+                  <% break;%>
+                <%}%>
+                <%pom222 += pom111[i];%>
+              <% } %>
+              <% if(pom222 !== 'null') {%>
+                <td id="krajj" style="<%= new Date(Date.parse(pom222)) > new Date(Date.parse(pom22)) ? 'color: red !important;' : 'color: green;' %>"><%= pom222 %></td>
+              <%} else {%>
+                <td></td>
+              <%}%>
+              <td><%= projekti[i].sati %></td>
+              <td><%= projekti[i].nadredjeni %></td>
+              <% let pomIme = ""; %>
+              <% for(let j=0; j<vezna.length; j++) { %>
+                <% if(vezna[j].idp === projekti[i].idp) { %>
+                  <% for(let k=0; k<zaposlenici.length; k++) { %>
+                    <% if(vezna[j].idz === zaposlenici[k].idz) { %>
+                      <% pomIme = pomIme + zaposlenici[k].ime + " " + zaposlenici[k].prezime + ", "; %>
+                    <% } %>
+                  <% } %>
+                <% } %>
+              <% } %>
+              <% let pomIme2 = pomIme.slice(0, -2); %>
+              <td><%= pomIme2 %></td>
+              <% if(ima === true) {%>
+                <td><button id="zavrsi" onclick="dodajKraj(<%=projekti[i].idp%>);" style="background-color:#D1E7DD; border: 1px solid black; border-radius: 10px; padding: 5px 20px;">Završi</button></td>
+              <%} else {%>
+                <td></td>
+              <%}%>
+            </tr>
+          <% } %>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+
+  </body>
+  <script>
+    function neNazad(){
+      function preventBack() {
+        window.history.forward();
+      }
+      setTimeout("preventBack()",0);
+      window.onunload = function () { null };
+    }
+
+    function izbrisi(id) {
+      window.location = `/brisi/korisnika/${id}`;
+    }
+
+    function dodajKraj(id) {
+      window.location = `/dodaj-kraj/${id}`;
+    }
+
+    $('#zavrsi').click(() => {
+      $('#zavrsi').hide();
+    })
+
+
+  </script>
+</html>

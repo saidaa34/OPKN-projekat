@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style>
+      body{
+        padding: 0;
+        margin: 0;
+      }
+      .bu {
+        background: transparent;
+        border: none;
+        color:white;
+        text-decoration: none;
+      }
+      .reg {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
+        justify-content: center;
+        align-items: center;
+      }
+      .forma {
+        border: 3px solid #4b8d6f;
+        padding: 3vh;
+        border-radius: 40px;
+        width: 350px;
+        backdrop-filter: blur(10px);
+      }
+      input {
+        height: 25px;
+        border: 1px solid black;
+        border-radius: 5px;
+        margin: 5px;
+        margin-left: 0;
+        width: 290px;
+      }
+      .sub {
+        width: 100px;
+        height: auto;
+        background-color:#D1E7DD;
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 5px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="reg">
+        <form id="uredjivanje" class="forma" method="post" action="/uredi" style="margin-top: 60px;">
+          <span>Izaberite radnika: </span>
+          <select name="radnik" >
+            <% for(let i=0; i<zaposlenici.length; i++){ %>
+                <% let rezultat = zaposlenici[i].email; %>
+                <optgroup label="<%= zaposlenici[i].ime + " " + zaposlenici[i].prezime %>">
+                  <option value="<%= rezultat %>"><%= rezultat %></option>
+                </optgroup>
+            <% } %>
+          </select>
+          <br><br>
+          <label>E-mail:</label>
+          <br>
+          <input type="text" name="email">
+          <br>
+          <label>Password:</label>
+          <br>
+          <input type="password" name="lozinka">
+          <br>
+          <label>Status:</label>
+          <br>
+          <select id="status" name="status">
+            <option value="Administrator">Administrator</option>
+            <option value="Menadzer">Menadzer</option>
+            <option value="Radnik">Radnik</option>
+          </select>
+          <br><br>
+          <label>Nadredjeni:</label>
+          <br>
+          <select name="nadredjeni" >
+            <% for(let i=0; i<zaposlenici.length; i++){ %>
+              <% let rezultat = zaposlenici[i].email; %>
+              <optgroup label="<%= zaposlenici[i].ime + " " + zaposlenici[i].prezime %>">
+                <option value="<%= rezultat %>"><%= rezultat %></option>
+              </optgroup>
+            <% } %>
+          </select>
+          <br><br>
+          <label>Početak radnog vremena:</label>
+          <br>
+          <input type="time" name="prv">
+          <br>
+          <label>Kraj radnog vremena:</label>
+          <br>
+          <input type="time" name="krv">
+          <br><br>
+          <input type="submit" class="sub">
+        </form>
+      </div>
+      <br>
+
+    </div>
+
+  </body>
+  <script>
+
+  </script>
+</html>

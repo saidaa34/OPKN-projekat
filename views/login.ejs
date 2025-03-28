@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+        body {
+            background-image: url('/images/pozadina4.png');
+            background-color: bisque;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 100px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 16vh;
+        }
+        form {
+            border: 1px solid black;
+            padding: 3vh;
+            border-radius: 40px;
+            width: 330px;
+            backdrop-filter: blur(10px);
+        }
+        input {
+            height: 25px;
+            border: 1px solid black;
+            border-radius: 5px;
+            margin: 5px;
+            margin-left: 0;
+            width: 290px;
+        }
+        .sub {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<h1><%= title %></h1>
+<div></div>
+<form method="post" action="/login" class="forma1">
+    <label>E-mail:</label>
+    <br>
+    <input type="text" name="email">
+    <br>
+    <label>Lozinka:</label>
+    <br>
+    <input type="password" name="lozinka">
+    <br><br>
+    <input type="submit" class="sub">
+</form>
+</body>
+</html>
